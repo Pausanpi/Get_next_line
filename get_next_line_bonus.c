@@ -80,7 +80,7 @@ char	*ft_next(char *left_str)
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*left_str;
+	static char	*left_str[1024];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
