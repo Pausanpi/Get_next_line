@@ -1,110 +1,96 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/19 12:06:35 by pausanch          #+#    #+#             */
+/*   Updated: 2023/10/20 12:47:13 by pausanch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
-char	*ft_read(int fd, char *left_str)
+static char	*ft_read(int fd, char *leftstr)
 {
-	char	*buffer;
 	int		bytes;
+	char	*buffer;
 
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buffer)
-		return (0);
+	if (!leftstr)
+		leftstr = ft_challoc(1);
+	buffer = ft_challoc(BUFFER_SIZE + 1);
 	bytes = 1;
-	while (!ft_strchr(left_str, '\n') && bytes != 0)
+	while (!ft_nlsrch(buffer) && bytes > 0)
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
-		if ( bytes == -1)
-		{
-			free(buffer);
-			return (0);
-		}
-		buffer[bytes] = '\0';
-		left_str = ft_strjoin(left_str, buffer);
+		if (bytes < 0)
+			return (free(buffer), free(leftstr), NULL);
+		buffer[bytes] = 0;
+		leftstr = ft_strjoin(leftstr, buffer);
+		if (!leftstr)
+			return (free(buffer), free(leftstr), NULL);
 	}
 	free(buffer);
-	return (left_str);
+	return (leftstr);
 }
 
-char	*ft_line(char *left_str)
+static char	*ft_line(char *leftstr)
 {
+	char	*line;
 	int		i;
-	char	*str;
 
 	i = 0;
-	if (!left_str[i])
+	if (!leftstr[i])
 		return (0);
-	while (left_str[i] && left_str[i] != '\n')
+	while (leftstr[i] && leftstr[i] != '\n')
 		i++;
-	str = (char *)mallloc(sizeof(char) * (i + 2));
-	if (!str)
-		return (0);
-	while (left_str[i] && left_str[i] != '\n')
+	line = ft_challoc(i + 1 + (leftstr[i] == '\n'));
+	i = 0;
+	while (leftstr[i] && leftstr[i] != '\n')
 	{
-		str[i] = left_str[i];
+		line[i] = leftstr[i];
 		i++;
 	}
-	if (left_str[i] == '\n')
-	{
-		str[i] = left_str[i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
+	if (leftstr[i])
+		line[i++] = '\n';
+	line[i] = 0;
+	return (line);
 }
 
-char	*ft_next(char *left_str)
+static char	*ft_next(char *leftstr)
 {
+	char	*tmp;
 	int		i;
 	int		j;
-	char	*str;
 
 	i = 0;
-	while (left_str[i] && left_str[i] != '\n')
+	while (leftstr[i] && leftstr[i] != '\n')
 		i++;
-	if (!left_str[i])
-	{
-		free(left_str);
-		return (0);
-	}
-	str = (char *)malloc(sizeof(char) * (ft_strlen(left_str) - i + 1));
-	if (!str)
-		return (0);
+	if (!leftstr[i])
+		return (free(leftstr), NULL);
+	tmp = ft_challoc(ft_strlen(leftstr) - i);
 	i++;
 	j = 0;
-	while (left_str[i])
-		str[j++] = left_str[i++];
-	str[j] = '\0';
-	free(left_str);
-	return (str);
+	while (leftstr[i + j])
+	{
+		tmp[j] = leftstr[i + j];
+		j++;
+	}
+	tmp[j] = 0;
+	free(leftstr);
+	return (tmp);
 }
 
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*left_str;
+	static char	*leftstr;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	left_str = fd_read(fd, left_str);
-	if (!left_str)
-		return (0);
-	line = ft_line(left_str);
-	left_str = ft_next(left_str);
+	leftstr = ft_read(fd, leftstr);
+	line = ft_line(leftstr);
+	leftstr = ft_next(leftstr);
 	return (line);
 }
-
-/*
-int	main(void)
-{
-	int		fd;
-	int		i;
-	char	*line;
-
-	fd = open("texto.txt", O_RDONLY);
-	for (i = 0; i < 100; i++)
-	{
-		line = get_next_line(fd);
-		printf("%s", line);
-	}
-	return (0);
-}
-*/

@@ -1,24 +1,55 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/19 12:10:08 by pausanch          #+#    #+#             */
+/*   Updated: 2023/10/20 12:33:31 by pausanch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_challoc(size_t count)
 {
-	int				aux;
-	unsigned char	*tmp;
+	char	*tmp;
+	size_t	i;
 
-	aux = 0;
-	tmp = (unsigned char *)s;
-	while (tmp[aux] != '\0')
-	{
-		if (tmp[aux] == (unsigned char)c)
-			return ((char *)&s[aux]);
-		aux++;
-	}
-	if (c == '\0' || c == 1024)
-		return ((char *)&s[aux]);
-	return (NULL);
+	i = 0;
+	tmp = (char *)malloc(count);
+	if (tmp == 0)
+		return (0);
+	while (i < count)
+		tmp[i++] = '\0';
+	return (tmp);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+bool	ft_nlsrch(char *str)
+{
+	if (!str)
+		return (false);
+	while (*str != 0)
+	{
+		if (*str == '\n')
+			return (true);
+		str++;
+	}
+	return (false);
+}
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	cont;
+
+	cont = 0;
+	while (s[cont] != '\0')
+		cont++;
+	return (cont);
+}
+
+char	*ft_strjoin(char *s1, char const *s2)
 {
 	char	*str;
 	size_t	x;
@@ -40,15 +71,5 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		y++;
 	}
 	str[x + y] = '\0';
-	return (str);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	cont;
-
-	cont = 0;
-	while (s[cont] != '\0')
-		cont++;
-	return (cont);
+	return (free(s1), str);
 }
