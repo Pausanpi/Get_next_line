@@ -1,4 +1,4 @@
-# Get_next_line
+# Get_next_line \n
 
 ## UTILS 🔧
 * char *ft_challoc(size_t count): Esta función asigna dinámicamente memoria para un arreglo de caracteres (char) y llena la memoria con caracteres nulos ('\0'). Devuelve un puntero al arreglo recién creado.
