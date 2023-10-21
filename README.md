@@ -48,7 +48,7 @@ La función principal 'get_next_line(int fd)' es la función que debe llamarse p
 * Si no encuentra un carácter de nueva línea (es decir, 'leftstr[i]' es nulo), libera la memoria asignada para 'leftstr' y devuelve un puntero nulo, lo que significa que no hay más para leer.
 * Si encuentra un carácter de nueva línea, crea una cadena llamada 'tmp' y copia el contenida de 'leftstr' a partir de la posición después de la línea leída.
 * Libera la memoria asignadad para el antiguo 'leftstr'.
-
+#
 ### Por si todavía no entendió 🤡
 
 Imagina que tienes un libro muy grande, pero solo puedes leer una línea a la vez. El libro es tan grande que no lo puedes sostener todo al mismo tiempo, así que usas un trozo de papel para recordar dónde te quedaste. Llamaremos a ese trozo de papel "leftstr".
