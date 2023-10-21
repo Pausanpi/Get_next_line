@@ -23,11 +23,6 @@ La función principal 'get_next_line(int fd)' es la función que debe llamarse p
 
 ### Explicación más detallada de las funciones estáticas anteriores
 ### 1) static char *ft_read(int fd, char *leftstr)
-
-Esta función se utiliza para leer datos de un archivo identificado por el descriptor de archivo 'fd' y almacenarlos en el puntero 'leftstr'.
-
-La función realiza lo siguiente:
-
 * Comprueba si 'leftstr' es nulo y, en ese caso, asigna memoria para un carácter nulo (se inicializa como una cadena vacía)
 * Asigna memoria para un búfer temporal llamado 'buffer' con un tamaño de 'BUFFER_SIZE + 1'. 'BUFFER_SIZE' es una constante que define el tamaño del búfer para la lectura de datos desde el archivo.
 * Inicializa 'bytes' en 1 para entrar en el bucle y comienza a leer desde el archivo a 'buffer'.
@@ -38,3 +33,15 @@ La función realiza lo siguiente:
 * Si la unión de cadenas falla (es decir, 'ft_strjoin' devuelve nulo), libera la memoria asignada para 'buffer' y 'lefstr' y devuelve un puntero nulo.
 * Continúa leyendo desde el archivo hasta encontrar una nueva línea o alcanzar el final del archivo.
 * Finalmente, libera la memoria asignada para 'buffer' y devuelve 'leftstr', que ahora contiene datos acumulados del archivo.
+
+### 2) sttatic char *ft_line(char *leftstr)
+* Verifica si 'leftstr' está vacío (es decir, 'leftstr[0]' es nulo). Si es así, devuelve un puntero nulo, lo que significa que no hay más líneas para leer.
+* Entra en un bucle mientras 'leftstr[1]' no es nulo y 'leftstr[1]' no es carácter de nueva línea ('\n').
+* Dentro del bucle, copia los caracteres de 'leftstr' en una nueva cadena llamada 'line' hasta que encuentre un carácter de nueva línea o llegue al final de 'leftstr'.
+* Si encuentra un carácter de nueva línea, lo incluye en 'line'.
+* Después de copiar la línea, agrega un carácter nulo al final de 'line' para que sea una cadena de caracteres válida.
+* Devuelve 'line', que contiene la primera línea de 'leftstr'.
+* Actualiza 'leftstr' para que apunte al contenido restante después de la línea leída.
+
+### 3) static char *ft_next(char *leftstr)
+*
