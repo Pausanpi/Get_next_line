@@ -34,9 +34,9 @@ La función principal 'get_next_line(int fd)' es la función que debe llamarse p
 * Continúa leyendo desde el archivo hasta encontrar una nueva línea o alcanzar el final del archivo.
 * Finalmente, libera la memoria asignada para 'buffer' y devuelve 'leftstr', que ahora contiene datos acumulados del archivo.
 
-### 2) sttatic char *ft_line(char *leftstr)
+### 2) static char *ft_line(char *leftstr)
 * Verifica si 'leftstr' está vacío (es decir, 'leftstr[0]' es nulo). Si es así, devuelve un puntero nulo, lo que significa que no hay más líneas para leer.
-* Entra en un bucle mientras 'leftstr[1]' no es nulo y 'leftstr[1]' no es carácter de nueva línea ('\n').
+* Entra en un bucle mientras 'leftstr[i]' no es nulo y 'leftstr[i]' no es carácter de nueva línea ('\n').
 * Dentro del bucle, copia los caracteres de 'leftstr' en una nueva cadena llamada 'line' hasta que encuentre un carácter de nueva línea o llegue al final de 'leftstr'.
 * Si encuentra un carácter de nueva línea, lo incluye en 'line'.
 * Después de copiar la línea, agrega un carácter nulo al final de 'line' para que sea una cadena de caracteres válida.
@@ -44,4 +44,7 @@ La función principal 'get_next_line(int fd)' es la función que debe llamarse p
 * Actualiza 'leftstr' para que apunte al contenido restante después de la línea leída.
 
 ### 3) static char *ft_next(char *leftstr)
-*
+* Busca la posición del primer carácter de nueva línea ('\n') en 'leftstr'.
+* Si no encuentra un carácter de nueva línea (es decir, 'leftstr[i]' es nulo), libera la memoria asignada para 'leftstr' y devuelve un puntero nulo, lo que significa que no hay más para leer.
+* Si encuentra un carácter de nueva línea, crea una cadena llamada 'tmp' y copia el contenida de 'leftstr' a partir de la posición después de la línea leída.
+* Libera la memoria asignadad para el antiguo 'leftstr'.
