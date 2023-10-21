@@ -22,7 +22,19 @@ Hay tres funciones estáticas (funciones definidas con 'static' que solo son vis
 La función principal 'get_next_line(int fd)' es la función que debe llamarse para obtener la siguiente línea del archivo identificado por el descriptor 'fd'. Se utiliza un puntero estático 'leftstr' para almacenar cualquier contenido no procesado de lecturas anteriores. En cada llamada a 'get_next_line', primero llama a 'ft_read' para cargar más contenido en 'leftstr', luego llama a 'ft_line' para obtener la siguiente línea, y finalmente llama a 'ft_next' para actualizar 'leftstr' con el contenido restante.
 
 ### Explicación más detallada de las funciones estáticas anteriores
-#### 1. static char *ft_read(int fd, char *leftstr)
+1. static char *ft_read(int fd, char *leftstr)
 
-Esta función se utiliza para leer datos de un archivo identificado por el descriptor de archivo 'fd' y almacenarlos en el puntero 
+Esta función se utiliza para leer datos de un archivo identificado por el descriptor de archivo 'fd' y almacenarlos en el puntero 'leftstr'.
 
+La función realiza lo siguiente:
+
+* Comprueba si 'leftstr' es nulo y, en ese caso, asigna memoria para un carácter nulo (se inicializa como una cadena vacía)
+* Asigna memoria para un búfer temporal llamado 'buffer' con un tamaño de 'BUFFER_SIZE + 1'. 'BUFFER_SIZE' es una constante que define el tamaño del búfer para la lectura de datos desde el archivo.
+* Inicializa 'bytes' en 1 para entrar en el bucle y comienza a leer desde el archivo a 'buffer'.
+* Entra en un bucle mientras no encuentra un carácter de nueva línea ('\n') en 'buffer' y mientras 'bytes' es mayor que 0 (indicando que todavía hay datos por leer en el archivo).
+* Si la lectura desde el archivo falla (bytes < 0), libera la memoria asignada para 'buffer' y 'leftstr' y devuelve un puntero nulo.
+* Si la lectura tiene éxito, agrega un carácter nulo al final de 'buffer' para asegurarse de que sea una cadena de caracteres válida.
+* Llama a 'ft_strjoin' para unir el contenido de 'leftstr' y 'buffer', almacenando el resultado en 'leftstr'.
+* Si la unión de cadenas falla (es decir, 'ft_strjoin' devuelve nulo), libera la memoria asignada para 'buffer' y 'lefstr' y devuelve un puntero nulo.
+* Continúa leyendo desde el archivo hasta encontrar una nueva línea o alcanzar el final del archivo.
+* Finalmente, libera la memoria asignada para 'buffer' y devuelve 'leftstr', que ahora contiene datos acumulados del archivo.
