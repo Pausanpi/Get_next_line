@@ -22,7 +22,7 @@ Hay tres funciones estáticas (funciones definidas con 'static' que solo son vis
 La función principal 'get_next_line(int fd)' es la función que debe llamarse para obtener la siguiente línea del archivo identificado por el descriptor 'fd'. Se utiliza un puntero estático 'leftstr' para almacenar cualquier contenido no procesado de lecturas anteriores. En cada llamada a 'get_next_line', primero llama a 'ft_read' para cargar más contenido en 'leftstr', luego llama a 'ft_line' para obtener la siguiente línea, y finalmente llama a 'ft_next' para actualizar 'leftstr' con el contenido restante.
 
 ### Explicación más detallada de las funciones estáticas anteriores
-1 static char *ft_read(int fd, char *leftstr)
+#### 1) static char *ft_read(int fd, char *leftstr)
 
 Esta función se utiliza para leer datos de un archivo identificado por el descriptor de archivo 'fd' y almacenarlos en el puntero 'leftstr'.
 
