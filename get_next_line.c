@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 12:06:35 by pausanch          #+#    #+#             */
-/*   Updated: 2023/10/20 12:47:13 by pausanch         ###   ########.fr       */
+/*   Updated: 2023/10/23 12:33:12 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ static char	*ft_read(int fd, char *leftstr)
 		if (!leftstr)
 			return (free(buffer), free(leftstr), NULL);
 	}
-	free(buffer);
-	return (leftstr);
+	return (free(buffer), leftstr);
 }
 
 static char	*ft_line(char *leftstr)
@@ -78,8 +77,7 @@ static char	*ft_next(char *leftstr)
 		j++;
 	}
 	tmp[j] = 0;
-	free(leftstr);
-	return (tmp);
+	return (free(leftstr), tmp);
 }
 
 char	*get_next_line(int fd)
@@ -89,6 +87,15 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
+	if (read(fd, 0, 0) < 0)
+	{
+		if (leftstr != NULL)
+		{
+			free(leftstr);
+			leftstr = NULL;
+		}
+		return (NULL);
+	}
 	leftstr = ft_read(fd, leftstr);
 	line = ft_line(leftstr);
 	leftstr = ft_next(leftstr);
